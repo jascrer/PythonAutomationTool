@@ -1,9 +1,13 @@
 # Base classes
+# Tag class: base class for all html objects
+
+
 class Tags:
-    def __init__(self, tag):
+    def __init__(self, tag, attrs):
         self.tag = tag
         self.id = ""
         self.data = None
+        self.attrs = attrs
 
     def getData(self):
         return self.data
@@ -20,12 +24,24 @@ class Tags:
     def setId(self, id):
         self.id = id
 
+    def getAttributes(self):
+        return self.attrs
+
+    def setAttributes(self, attrs):
+        self.attrs = attrs
+
     def getPrintableTag(self):
         if len(self.id) == 0:
-            return self.tag
-        return self.tag + " id=" + self.id
+            return self.tag + self.getPrintableAttributes()
+        return self.tag + " id=" + self.id + self.getPrintableAttributes()
 
-# Container
+    def getPrintableAttributes(self):
+        attributes = ""
+        for attr, value in self.attrs.items():
+            attributes = attributes + " " + attr + "=" + value
+        return attributes
+
+# Container class: for all html objects that can contain html objets
 
 
 class Container:
@@ -43,6 +59,8 @@ class Container:
         return len(self.tags)
 
     def getElement(self, index):
+        if len(self.tags) == 0:
+            return None
         return self.tags[index]
 
     def getParent(self):
@@ -52,85 +70,33 @@ class Container:
         self.parent = parent
 
     def printContainer(self, tabs):
-        print()
+        tabChars = "    " * tabs
+        print(tabChars + "|->" + self.getPrintableTag())
+        self.printChildrenTags(tabs + 1)
+
+    def printerContainer(self, printer, tabs):
+        tabChars = "    " * tabs
+        printer.write("\n" + tabChars + "|->" + self.getPrintableTag())
+        self.printerChildrenTags(printer, tabs + 1)
 
     def printChildren(self):
         self.printChildrenTags(1)
+
+    def printerChildren(self, printer):
+        self.printerChildrenTags(printer, 1)
 
     def printChildrenTags(self, tabs):
         tabChars = "    " * tabs
         for tag in self.tags:
             if(isinstance(tag, Container)):
-                tag.printContainer((tabs))
+                tag.printContainer(tabs)
             elif(isinstance(tag, Tags)):
                 print(tabChars + "|->" + tag.getPrintableTag())
 
-# HTML
-
-
-class HTML(Tags, Container):
-    def __init__(self):
-        Tags.__init__(self, "html")
-        Container.__init__(self)
-
-    def printContainer(self):
-        print(self.getPrintableTag())
-        self.printChildren()
-
-# Div
-
-
-class Div(Tags, Container):
-    def __init__(self):
-        Tags.__init__(self, "div")
-        Container.__init__(self)
-
-    def printContainer(self, tabs):
+    def printerChildrenTags(self, printer, tabs):
         tabChars = "    " * tabs
-        print(tabChars + "|->" + self.getPrintableTag())
-        self.printChildrenTags(tabs + 1)
-
-# Controls
-# Button
-
-
-class Button(Tags):
-    def __init__(self):
-        Tags.__init__(self, "button")
-
-# Label
-
-
-class Label(Tags):
-    def __init__(self):
-        Tags.__init__(self, "label")
-
-# Input
-
-
-class Input(Tags):
-    def __init__(self, type):
-        Tags.__init__(self, "input")
-        self.type = type
-
-    def getType(self):
-        return self.type
-
-    def getPrintableTag(self):
-        return Tags.getPrintableTag(self) + " type=" + self.type
-
-# Tag Factory Class
-
-
-class TagFactory:
-    def CreateTagObject(tag, attrs):
-        if tag == "html":
-            return HTML()
-        elif tag == "div":
-            return Div()
-        elif tag == "button":
-            return Button()
-        elif tag == "label":
-            return Label()
-        elif tag == "input":
-            return Input("text")
+        for tag in self.tags:
+            if(isinstance(tag, Container)):
+                tag.printerContainer(printer, tabs)
+            elif(isinstance(tag, Tags)):
+                printer.write("\n" + tabChars + "|->" + tag.getPrintableTag())

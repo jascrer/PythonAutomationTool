@@ -2,7 +2,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 from htmlparser import MainParser
-import helpers
+import controls
+import containers
 
 url = 'http://tutorialspoint.com/python/python_overview.htm'
 # Fetch the html file
@@ -16,28 +17,34 @@ soup = BeautifulSoup(html_doc, 'html.parser')
 strhtm = soup.prettify()
 
 # Test
-div = helpers.Div()
+div = containers.Div({})
 div.setId("div_1")
 
-button = helpers.Button()
+button = controls.Button({})
 button.setId("button_1")
 div.addElement(button)
 
-label = helpers.Label()
+label = controls.Label({})
 label.setId("label_1")
 div.addElement(label)
 
-inputSubmit = helpers.Input("submit")
+inputSubmit = controls.Input("submit", {})
 inputSubmit.setId("input_submit_1")
 
-html = helpers.HTML()
+html = containers.HTML({})
 html.addElement(div)
 
 # Execution
-html.printContainer()
+# html.printContainer()
 
 # Parser test
 testHtml = '<html><div><button></button><label>Test!</label><input type=text></input></div><button></button></html>'
 htmlParser = MainParser()
 htmlParser.feed(testHtml)
 htmlParser.getHtmlRoot().printContainer()
+
+writer = open("tree.txt", "w")
+htmlParser2 = MainParser()
+htmlParser2.feed(html_doc.decode("utf-8"))
+htmlParser2.getHtmlRoot().printerContainer(writer)
+writer.close()
