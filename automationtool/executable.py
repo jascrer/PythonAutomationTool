@@ -2,6 +2,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 from htmlparser import MainParser
+from routetablecreator import RouteTableCreator
 import controls
 import containers
 
@@ -38,13 +39,26 @@ html.addElement(div)
 # html.printContainer()
 
 # Parser test
-testHtml = '<html><div><button></button><label>Test!</label><input type=text></input></div><button></button></html>'
+testHtml = ('<html><div><button></button><label>Test!</label>' +
+            '<input type=text></input></div><button></button></html>')
 htmlParser = MainParser()
 htmlParser.feed(testHtml)
 htmlParser.getHtmlRoot().printContainer()
+print("")
 
 writer = open("tree.txt", "w")
 htmlParser2 = MainParser()
 htmlParser2.feed(html_doc.decode("utf-8"))
 htmlParser2.getHtmlRoot().printerContainer(writer)
+writer.close()
+
+# Route Table test
+routeTable = RouteTableCreator.createTable(htmlParser.getHtmlRoot())
+for key, value in routeTable.items():
+    print(key + " = " + value.getTag())
+
+writer = open("routetable.txt", "w")
+routeTable2 = RouteTableCreator.createTable(htmlParser2.getHtmlRoot())
+for key, value in routeTable2.items():
+    writer.write(key + " = " + value.getTag() + "\n")
 writer.close()

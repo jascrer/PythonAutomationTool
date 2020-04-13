@@ -8,6 +8,7 @@ class Tags:
         self.id = ""
         self.data = None
         self.attrs = attrs
+        self.parent = None
 
     def getData(self):
         return self.data
@@ -29,6 +30,12 @@ class Tags:
 
     def setAttributes(self, attrs):
         self.attrs = attrs
+
+    def getParent(self):
+        return self.parent
+
+    def setParent(self, parent):
+        self.parent = parent
 
     def getPrintableTag(self):
         if len(self.id) == 0:

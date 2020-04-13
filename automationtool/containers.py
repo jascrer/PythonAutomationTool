@@ -73,3 +73,27 @@ class Li(Tags, Container):
     def __init__(self, attrs):
         Tags.__init__(self, "li", attrs)
         Container.__init__(self)
+
+# Footer tag class
+
+
+class Footer(Tags, Container):
+    def __init__(self, attrs):
+        Tags.__init__(self, "footer", attrs)
+        Container.__init__(self)
+
+# Parragraph tag class
+
+
+class Parragraph(Tags, Container):
+    def __init__(self, attrs):
+        Tags.__init__(self, "p", attrs)
+        Container.__init__(self)
+
+# Headers tag class
+
+
+class Headers(Tags, Container):
+    def __init__(self, tag, attrs):
+        Tags.__init__(self, tag, attrs)
+        Container.__init__(self)

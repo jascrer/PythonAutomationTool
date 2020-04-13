@@ -2,11 +2,16 @@ import helpers
 import containers
 import controls
 
-# Tag Factory Class
-# This class is a factory for the different classes of html objects
+"""
+TagFactory Class:
+This class is a factory for the different classes of html objects
+"""
 
 
 class TagFactory:
+    """
+    Creates a Tag object based on the given html tag
+    """
     def CreateTagObject(tag, attrs):
         attributes = TagFactory.ConvertTupleToDictionary(attrs)
         if tag == "html":
@@ -41,9 +46,18 @@ class TagFactory:
             return containers.Ul(attributes)
         elif tag == "li":
             return containers.Li(attributes)
+        elif tag == "footer":
+            return containers.Footer(attributes)
+        elif tag == "p":
+            return containers.Parragraph(attributes)
+        elif tag == "h1" or tag == "h2" or tag == "h3" or tag == "h4":
+            return containers.Headers(tag, attributes)
         else:
             return helpers.Tags("default_" + tag, {})
 
+    """
+    Converts the tuple of attributes in a more convenient dictionary
+    """
     def ConvertTupleToDictionary(listAttributes):
         dictionary = {}
         for attribute in listAttributes:
