@@ -20,7 +20,10 @@ class Tags:
         return self.tag
 
     def getId(self):
-        return self.id
+        if(len(self.attrs) > 0 and "id" in self.attrs):
+            return self.attrs["id"]
+        else:
+            return ""
 
     def setId(self, id):
         self.id = id

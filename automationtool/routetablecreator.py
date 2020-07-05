@@ -29,5 +29,6 @@ class RouteTableCreator:
                                                            dictionary,
                                                            newRoute + ".")
             else:
-                dictionary[newRoute + "." + tag.getTag()] = tag
+                tempRoute = newRoute + "." + tag.getTag() + "_" + tag.getId()
+                dictionary[tempRoute] = tag
         return dictionary

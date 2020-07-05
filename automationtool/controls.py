@@ -42,3 +42,10 @@ class HyperLink(Tags):
         if self.data:
             attributes = attributes + " data=" + self.data
         return Tags.getPrintableTag(self) + attributes
+
+# TextArea tag class
+
+
+class TextArea(Tags):
+    def __init__(self, attrs):
+        Tags.__init__(self, "textarea", attrs)

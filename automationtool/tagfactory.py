@@ -52,6 +52,8 @@ class TagFactory:
             return containers.Parragraph(attributes)
         elif tag == "h1" or tag == "h2" or tag == "h3" or tag == "h4":
             return containers.Headers(tag, attributes)
+        elif tag == "textarea":
+            return controls.TextArea(attributes)
         else:
             return helpers.Tags("default_" + tag, {})
 
