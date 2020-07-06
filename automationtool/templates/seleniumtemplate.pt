@@ -1,0 +1,40 @@
+{# Libraries for unit testing and for automation #}
+import unittest
+
+"""
+Basic Selenium libraries
+"""
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+{% if uiLibraries|length > 0%}
+"""
+Selenium WebDriver UI controls libraries
+"""
+{% for library in uiLibraries %}
+from selenium.webdriver.support.ui import {{ library }}
+{% endfor %}
+{% endif %}
+
+"""
+{{testName}} automated test class
+"""
+
+class {{testName}}(unittest.TestCase):
+    def setUp(self):
+        # Sets the web driver for testing
+
+        self.driver = webdriver.{{browser}}()
+
+    def test_{{testName}}(self):
+        self.driver.get('{{url}}')
+        # Generated instructions block
+        {% for instruction in instructions %}
+        {{ instruction }}
+        {% endfor %}
+        # End instructions block
+
+    def tearDown(self):
+        # Closes the browser on exiting the unit test
+        self.driver.quit()

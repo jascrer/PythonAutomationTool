@@ -6,6 +6,8 @@ from routetablecreator import RouteTableCreator
 import controls
 import containers
 
+from seleniumtemplatecreator import SeleniumTemplateCreator
+
 url = 'http://tutorialspoint.com/python/python_overview.htm'
 # Fetch the html file
 response = urlopen(url)
@@ -62,3 +64,11 @@ routeTable2 = RouteTableCreator.createTable(htmlParser2.getHtmlRoot())
 for key, value in routeTable2.items():
     writer.write(key + " = " + value.getTag() + "\n")
 writer.close()
+
+# Test Seleniumtemplatecreator
+
+
+creator = SeleniumTemplateCreator('Chrome', 'http://localhost')
+creator.setSeleniumTemplate()
+template = creator.renderTemplate('test_1', ['getinstruction'], [])
+print(template)
